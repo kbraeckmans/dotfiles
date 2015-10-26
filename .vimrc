@@ -1,5 +1,6 @@
 set nocompatible              " be iMproved, required
 filetype off                  " required
+syntax on
 
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
@@ -47,5 +48,17 @@ set background=dark
 let base16colorspace=256
 colorscheme base16-default
 
-set number
 set cursorline
+set hidden
+set hlsearch
+set number
+set wildmenu
+
+set ignorecase
+set smartcase
+
+set visualbell
+
+set shiftwidth=4
+set softtabstop=4
+set expandtab
