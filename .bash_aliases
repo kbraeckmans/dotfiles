@@ -8,6 +8,7 @@ alias ...='cd ../../../'
 alias ....='cd ../../../../'
 alias .....='cd ../../../../'
 
+alias ls='ls --color=always'
 alias ll='ls -Ahl'
 
 alias grep='grep --color=auto'
