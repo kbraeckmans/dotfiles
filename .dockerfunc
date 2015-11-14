@@ -5,17 +5,19 @@
 # Helper Functions
 #
 dcleanup(){
-	docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
-	docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
+    docker rm -v $(docker ps --filter status=exited -q 2>/dev/null) 2>/dev/null
+    docker rmi $(docker images --filter dangling=true -q 2>/dev/null) 2>/dev/null
 }
-del_stopped(){
-	local name=$1
-	local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
 
-	if [[ "$state" == "false" ]]; then
-		docker rm $name
-	fi
+del_stopped(){
+    local name=$1
+    local state=$(docker inspect --format "{{.State.Running}}" $name 2>/dev/null)
+
+    if [[ "$state" == "false" ]]; then
+	docker rm $name
+    fi
 }
+
 relies_on(){
 	local containers=$@
 
@@ -33,35 +35,38 @@ relies_on(){
 # Container Aliases
 #
 torbrowser(){
-	del_stopped torbrowser
+    del_stopped torbrowser
 
-	docker run -d \
-		-v /etc/localtime:/etc/localtime:ro \
-		-v /tmp/.X11-unix:/tmp/.X11-unix \
-		-e DISPLAY=unix$DISPLAY \
-		-e GDK_SCALE \
-		-e GDK_DPI_SCALE \
-		--device /dev/snd \
-		--name torbrowser \
-		kbraeckmans/tor-browser
+    docker run -d \
+	-v /etc/localtime:/etc/localtime:ro \
+	-v /tmp/.X11-unix:/tmp/.X11-unix \
+	-e DISPLAY=unix$DISPLAY \
+	-e GDK_SCALE \
+	-e GDK_DPI_SCALE \
+	--device /dev/snd \
+	--name torbrowser \
+	kbraeckmans/tor-browser
 
-	# exit current shell
-	exit 0
+    # exit current shell
+    exit 0
 }
 
 cool-retro-term(){
-	del_stopped cool-retro-term
+    del_stopped cool-retro-term
 
-  docker run -it \
-    -v /tmp/.X11-unix:/tmp/.X11-unix \
-    -e DISPLAY=unix$DISPLAY \
-    --name cool-retro-term \
-    kbraeckmans/cool-retro-term
+    docker run -it \
+        -v /tmp/.X11-unix:/tmp/.X11-unix \
+        -e DISPLAY=unix$DISPLAY \
+        --name cool-retro-term \
+        kbraeckmans/cool-retro-term
 
 }
 
 youtube-dl(){
-  docker run --rm -it \
-    -v $(pwd):/root \
-    kbraeckmans/youtube-dl "$@"
+    del_stopped youtube-dl
+
+    docker run --rm -it \
+        --name youtube-dl \
+        -v $HOME/dockervolumes/youtube-dl:/root \
+        kbraeckmans/youtube-dl "$@"
 }
