@@ -62,6 +62,15 @@ cool-retro-term(){
 
 }
 
+linx-server(){
+    del_stopped linx-server
+
+    docker run -d \
+        --name linx-server \
+        --net host \
+        kbraeckmans/linx-server
+}
+
 youtube-dl(){
     del_stopped youtube-dl
 
